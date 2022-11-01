@@ -2,7 +2,7 @@
 # video is in Chinese, there is animation to show how the algo works
 # https://youtu.be/_B8XV1iIvq8?t=97
 # code may be messy, please update it if possible
-def fun_heuristic(graphmap, goal):
+def fun_moddijkstra(graphmap, goal):
     row = len(graphmap)
     heuristic = []
     cost = []
@@ -51,8 +51,12 @@ def fun_heuristic(graphmap, goal):
     return heuristic
 
 
-# a represent the graph as https://imgur.com/a/tMW0ww6
-a = [[0, 1, 2, 10], [1, 0, 5, -1], [2, 5, 0, 9], [10, -1, 9, 0]]
-print(a)
-for i in range(len(a)):
-    print("goal: " + str(i + 1) + "; heuristic= " + str(fun_heuristic(a, i)))
+import numpy as np
+
+  
+def fun_heuristic(graphmap):
+    heuristic = []
+    for i in range(len(graphmap)):
+        a = fun_moddijkstra(graphmap, i)
+        heuristic.append(a)
+    return np.transpose(heuristic)
