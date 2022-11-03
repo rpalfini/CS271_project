@@ -64,10 +64,12 @@ def fun_full_map_heuristic(graphmap):
 
 # don't call this method
 def fun_heuristic_recursive(graphmap, current, visited, n):
-    if(n == 0):
+    if(n == 0 or len(visit) == len(graphmap)):
         return 0
     heuristic = []
     for i in range(len(graphmap)):
+        if(i in visited):
+            continue
         tempvisited = visited.copy()
         tempvisited.append(i)
         a = graphmap[current][i] + fun_heuristic_recursive(graphmap, i, tempvisited, n - 1)
