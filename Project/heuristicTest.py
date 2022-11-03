@@ -3,5 +3,6 @@ from Project import heuristic
 
 file_input = open("input.txt", "r")
 graph = inputTransformer.getInput(file_input)
-print(graph)
-print(str(heuristic.fun_heuristic(graph)))
+for i in graph:
+    print(i)
+print(str(heuristic.fun_heuristic(graph, 1, [1], 2)))
