@@ -64,7 +64,7 @@ def fun_full_map_heuristic(graphmap):
 
 # don't call this method
 def fun_heuristic_recursive(graphmap, current, visited, n):
-    if(n == 0 or len(visit) == len(graphmap)):
+    if(n == 0 or (len(visited) == len(graphmap))):
         return 0
     heuristic = []
     for i in range(len(graphmap)):
@@ -85,6 +85,7 @@ def fun_heuristic(graphmap, current, visited, n):
     for i in range(len(graphmap)):
         if(i in visited):
             heuristic.append(-1)
+            continue
         if(n == 0):
             heuristic.append(0)
             continue
