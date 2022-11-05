@@ -1,6 +1,8 @@
 # similar to this part from this video but in opposite way, I think it is modification of dijkstra
 # video is in Chinese, there is animation to show how the algo works
 # https://youtu.be/_B8XV1iIvq8?t=97
+
+
 def fun_moddijkstra(graphmap, goal):
     row = len(graphmap)
     heuristic = []
@@ -62,6 +64,9 @@ def fun_full_map_heuristic(graphmap):
     return np.transpose(heuristic)
 
 
+dict_heuristic = {}
+
+
 # don't call this method
 def fun_heuristic_recursive(graphmap, current, visited, n):
     if(n == 0 or (len(visited) == len(graphmap))):
@@ -81,6 +86,10 @@ def fun_heuristic_recursive(graphmap, current, visited, n):
 # this heuristic will only check next n steps and return smallest path value of next step for n steps
 # input different n may help with the speed and memory usage
 def fun_heuristic(graphmap, current, visited, n):
+    visited.sort()
+    key = str(current) + str(visited)
+    if key in dict_heuristic:
+        return dict_heuristic[key]
     heuristic = []
     for i in range(len(graphmap)):
         if(i in visited):
@@ -93,4 +102,5 @@ def fun_heuristic(graphmap, current, visited, n):
         tempvisited.append(i)
         a = graphmap[current][i] + fun_heuristic_recursive(graphmap, i, tempvisited, n - 1)
         heuristic.append(a)
+    dict_heuristic[key] = heuristic
     return heuristic
