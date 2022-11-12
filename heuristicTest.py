@@ -1,5 +1,5 @@
-from Project import inputTransformer
-from Project import heuristic
+import inputTransformer
+from Heuristic import heuristic
 
 file_input = open("input.txt", "r")
 graph = inputTransformer.getInput(file_input)

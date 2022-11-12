@@ -68,16 +68,16 @@ dict_heuristic = {}
 
 
 # don't call this method
-def fun_heuristic_recursive(graphmap, current, visited, n):
+def fun_heuristic_recursive(start, graphmap, current, visited, n):
     if(n == 0 or (len(visited) == len(graphmap))):
-        return 0
+        return graphmap[current][start]
     heuristic = []
     for i in range(len(graphmap)):
         if(i in visited):
             continue
         tempvisited = visited.copy()
         tempvisited.append(i)
-        a = graphmap[current][i] + fun_heuristic_recursive(graphmap, i, tempvisited, n - 1)
+        a = graphmap[current][i] + fun_heuristic_recursive(start, graphmap, i, tempvisited, n - 1)
         heuristic.append(a)
     heuristic.sort()
     return heuristic[0]
@@ -85,7 +85,8 @@ def fun_heuristic_recursive(graphmap, current, visited, n):
 
 # this heuristic will only check next n steps and return smallest path value of next step for n steps
 # input different n may help with the speed and memory usage
-def fun_heuristic(graphmap, current, visited, n):
+def fun_heuristic(start, graphmap, current, visited, n):
+    global dict_heuristic
     visited.sort()
     key = str(current) + str(visited)
     if key in dict_heuristic:
@@ -100,7 +101,7 @@ def fun_heuristic(graphmap, current, visited, n):
             continue
         tempvisited = visited.copy()
         tempvisited.append(i)
-        a = graphmap[current][i] + fun_heuristic_recursive(graphmap, i, tempvisited, n - 1)
+        a = graphmap[current][i] + fun_heuristic_recursive(start, graphmap, i, tempvisited, n - 1)
         heuristic.append(a)
     dict_heuristic[key] = heuristic
     return heuristic
