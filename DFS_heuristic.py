@@ -85,7 +85,7 @@ DFS(Start_node, adj_matrix, Start_node, need_visit, 0, v_visited)
 print("shortest path cost: " + str(upper_bound))
 print("cost to loop: " + str(total_t))
 t = 1
-for i in range(1, N + 1):
+for i in range(1, N):
     t *= i 
 print("cost to loop all: " + str(t))
 
