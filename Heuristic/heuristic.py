@@ -1,9 +1,6 @@
 # similar to this part from this video but in opposite way, I think it is modification of dijkstra
 # video is in Chinese, there is animation to show how the algo works
 # https://youtu.be/_B8XV1iIvq8?t=97
-from tensorflow.python.ops.gen_array_ops import upper_bound
-
-
 def fun_moddijkstra(graphmap, goal):
     row = len(graphmap)
     heuristic = []
