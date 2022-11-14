@@ -1,6 +1,7 @@
 # similar to this part from this video but in opposite way, I think it is modification of dijkstra
 # video is in Chinese, there is animation to show how the algo works
 # https://youtu.be/_B8XV1iIvq8?t=97
+from tensorflow.python.ops.gen_array_ops import upper_bound
 
 
 def fun_moddijkstra(graphmap, goal):
@@ -65,20 +66,32 @@ def fun_full_map_heuristic(graphmap):
 
 
 dict_heuristic = {}
+max_V = 0
 
 
 # don't call this method
-def fun_heuristic_recursive(start, graphmap, current, visited, n):
-    if(n == 0 or (len(visited) == len(graphmap))):
-        return graphmap[current][start]
+def fun_heuristic_recursive(start, graphmap, current, visited, n, max):
+    # if(n == 0 or (len(visited) == len(graphmap))):
+    #    return graphmap[current][start]
+    if(n == 0):
+        return 0
     heuristic = []
     for i in range(len(graphmap)):
         if(i in visited):
             continue
         tempvisited = visited.copy()
         tempvisited.append(i)
-        a = graphmap[current][i] + fun_heuristic_recursive(start, graphmap, i, tempvisited, n - 1)
-        heuristic.append(a)
+        a = graphmap[current][i] + fun_heuristic_recursive(start, graphmap, i, tempvisited, n - 1, max)
+        if(a == 0):
+            continue
+        if max == 0:
+            max = a
+            heuristic.append(a)
+            continue
+        if a < max:
+            heuristic.append(a)
+    if(len(heuristic) == 0):
+        return 0
     heuristic.sort()
     return heuristic[0]
 
@@ -86,7 +99,9 @@ def fun_heuristic_recursive(start, graphmap, current, visited, n):
 # this heuristic will only check next n steps and return smallest path value of next step for n steps
 # input different n may help with the speed and memory usage
 def fun_heuristic(start, graphmap, current, visited, n):
+    global max_V
     global dict_heuristic
+    max_V = 0
     visited.sort()
     key = str(current) + str(visited)
     if key in dict_heuristic:
@@ -101,7 +116,7 @@ def fun_heuristic(start, graphmap, current, visited, n):
             continue
         tempvisited = visited.copy()
         tempvisited.append(i)
-        a = graphmap[current][i] + fun_heuristic_recursive(start, graphmap, i, tempvisited, n - 1)
+        a = graphmap[current][i] + fun_heuristic_recursive(start, graphmap, i, tempvisited, n - 1, max_V)
         heuristic.append(a)
     dict_heuristic[key] = heuristic
     return heuristic
