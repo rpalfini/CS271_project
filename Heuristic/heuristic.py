@@ -127,7 +127,7 @@ def fun_heuristic(start, graphmap, current, visited, n):
     global max_V
     max_V = 0
    # minp = findMin(graphmap)
-    fix = max(0, (len(graphmap) - len(visited) - n))
+    fix = max(0, (len(graphmap) - len(visited) - n)) * minpath
     heuristic = []
     for i in range(len(graphmap)):
         if(i in visited):
@@ -138,7 +138,7 @@ def fun_heuristic(start, graphmap, current, visited, n):
             continue
         tempvisited = visited.copy()
         tempvisited.append(i)
-        a = graphmap[current][i] + fun_heuristic_recursive(start, graphmap, i, tempvisited, n - 1, max_V) + minpath * fix
+        a = graphmap[current][i] + fun_heuristic_recursive(start, graphmap, i, tempvisited, n - 1, max_V) + fix
         heuristic.append(a)
     dict_heuristic[key] = heuristic
     return heuristic

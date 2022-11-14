@@ -88,7 +88,7 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     return upper_bound
 
 
-file_input = open("14_5.0_1.0.out", "r")
+file_input = open("11_5.0_1.0.out", "r")
 graph = inputTransformer.getInput(file_input)
 print(graph)
 N = len(graph)
@@ -111,5 +111,5 @@ t = 1
 for i in range(1, N):
     t *= i 
 print("cost to loop all: " + str(t))
-print("dfs ns time: " + str(time_dfs / 1000000000))
-print("hx ns time: " + str(time_hx / 1000000000))
+print("dfs time: " + str(time_dfs / 1000000000))
+print("hx time: " + str(time_hx / 1000000000))
