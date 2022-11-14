@@ -60,6 +60,7 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     te_nanosec = time.time_ns()
     time_dfs += te_nanosec - t_nanosec
     t_nanosec = time.time_ns()
+    N = len(graph)
     hx = heuristic.fun_heuristic(Start_node, adj_matrix, node, temp_visited, 4)
     te_nanosec = time.time_ns()
     time_hx += te_nanosec - t_nanosec
@@ -71,7 +72,6 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     count = 0
     sorted_need = []
     l = len(hxc)
-    N = len(graph)
     while(count < l):
         if(hxc[count] <= 0):
             break
@@ -88,7 +88,7 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     return upper_bound
 
 
-file_input = open("11_5.0_1.0.out", "r")
+file_input = open("14_5.0_1.0.out", "r")
 graph = inputTransformer.getInput(file_input)
 print(graph)
 N = len(graph)
@@ -111,5 +111,5 @@ t = 1
 for i in range(1, N):
     t *= i 
 print("cost to loop all: " + str(t))
-print("dfs ns time: " + str(time_dfs))
-print("hx ns time: " + str(time_hx))
+print("dfs ns time: " + str(time_dfs / 1000000000))
+print("hx ns time: " + str(time_hx / 1000000000))
