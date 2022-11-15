@@ -1,6 +1,6 @@
 import copy
 import random
-import networkx as nx
+from graphviz import Digraph
 import matplotlib.pyplot as plt
 from Heuristic import heuristic
 import inputTransformer
@@ -10,57 +10,68 @@ import inputTransformer
 # 1.graph with edge weight
 # 2.store the path
 
-# N = 18
-
-# random.seed(10)
-# adj_matrix = [[(random.randint(1, 500) if i != i2 else 0) for i in range(N)] for i2 in range(N)]
-# print(adj_matrix)
-
-# G = nx.DiGraph()
-# for i in range(0,N):
-#    G.add_node(i)
-# for i in range(N):
-#    for j in range(N):
-#        if adj_matrix[i][j] > 0:
-#            G.add_edge(i,j,weight = adj_matrix[i][j])
-# nx.draw(G)
-# plt.show()
 
 import time 
 time_dfs = 0
 time_hx = 0
 
+#genrate graph
+g = Digraph('G')
+g.attr(compound = 'true')
+DFS_number = 0
 
 def DFS(startnode, adj_matrix, node, need_visit, path, visited):
+
+    #time
     t_nanosec = time.time_ns()
     global total_t
     global time_dfs
     global time_hx
     total_t += 1
     #
-    # print(node)
+
+    #path
+    global p
+    global temp_p
     global upper_bound
+    #
+
+    #graph
+    global DFS_number
+    global g
+    #
+
+    curr_node = str(node) +'|' + str(DFS_number)
     # break condition
     if path > upper_bound:
-        # print("break: " + str(path) + ">" + str(upper_bound))
-        return upper_bound
+        g.edge(curr_node,'terminated'+str(path))
+        return
+
+    temp_p.append(node)
+
+    #update this time complexicty. make deep copy of list,increase space complexcity, may need to add node back in future/not linear space?
     temp_need_visit = copy.deepcopy(need_visit)
     temp_need_visit.remove(node)
     temp_visited = copy.deepcopy(visited)
     temp_visited.append(node)
-    # if(len(temp_visited)==N):
-    #    print("DFS")
-    #    print("visited:" + str(temp_visited))
-    #    print("need:" + str(temp_need_visit))
     
     # visit all the node,return the path
     if not temp_need_visit:
-        return path + adj_matrix[node][Start_node]
-    # make deep copy of list,increase space complexcity, may need to add node back in future/not linear space?
+        new_distance = path + adj_matrix[node][Start_node]
+        if new_distance <= upper_bound:
+            upper_bound = new_distance
+            p = copy.deepcopy(temp_p)
+            g.edge(curr_node, 'solution|' + str(new_distance))
+        else:
+            g.edge(curr_node, 'terminated|' + str(new_distance))
+
+        temp_p.remove(node)
+        return
+
+    #
     te_nanosec = time.time_ns()
     time_dfs += te_nanosec - t_nanosec
     t_nanosec = time.time_ns()
-    N = len(graph)
     hx = heuristic.fun_heuristic(Start_node, adj_matrix, node, temp_visited, 4)
     te_nanosec = time.time_ns()
     time_hx += te_nanosec - t_nanosec
@@ -68,10 +79,13 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     hxc = list(filter(lambda a: a != 0 and a != -1, hx))
     hxc.sort()
     if(path + hxc[0] > upper_bound):
-        return upper_bound
+        temp_p.remove(node)
+        g.edge(curr_node, 'terminated|' + str(path + hxc[0]))
+        return
     count = 0
     sorted_need = []
     l = len(hxc)
+    N = len(graph)
     while(count < l):
         if(hxc[count] <= 0):
             break
@@ -82,15 +96,15 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
                break
     te_nanosec = time.time_ns()
     time_dfs += te_nanosec - t_nanosec
+
     for i in sorted_need:
-        temp = DFS(startnode, adj_matrix, i, sorted_need, path + adj_matrix[node][i], temp_visited)
-        upper_bound = min(temp , upper_bound)
-    return upper_bound
+        DFS(startnode, adj_matrix, i, sorted_need, path + adj_matrix[node][i], temp_visited)
+    temp_p.remove(node)
+    return
 
 
 file_input = open("11_5.0_1.0.out", "r")
 graph = inputTransformer.getInput(file_input)
-print(graph)
 N = len(graph)
 Start_node = 0
 need_visit = [i for i in range(0, N)]  # + [Start_node]
@@ -101,9 +115,23 @@ v_visited = []
 
 total_t = 0
 
+p = []
+temp_p = []
+
 time_nanosec = time.time_ns()
 DFS(Start_node, graph, Start_node, need_visit, 0, v_visited)
 time_nanosec_end = time.time_ns()
+
+p.append(Start_node)
+
+distance_verify = 0
+#verfiy
+for i in range(0,len(p)-1):
+ distance_verify += graph[p[i]][p[i+1]]
+print('path: ',p)
+print('path_verify:',distance_verify)
+#
+
 
 print("shortest path cost: " + str(upper_bound))
 print("cost to loop: " + str(total_t))
@@ -111,5 +139,7 @@ t = 1
 for i in range(1, N):
     t *= i 
 print("cost to loop all: " + str(t))
-print("dfs time: " + str(time_dfs / 1000000000))
-print("hx time: " + str(time_hx / 1000000000))
+print("dfs ns time: " + str(time_dfs))
+print("hx ns time: " + str(time_hx))
+
+#g.render('1.png', format='png')
