@@ -71,7 +71,7 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     te_nanosec = time.time_ns()
     time_dfs += te_nanosec - t_nanosec
     t_nanosec = time.time_ns()
-    hx = heuristic.fun_heuristic(Start_node, adj_matrix, node, temp_visited, 4)
+    hx = heuristic.fun_heuristic(adj_matrix, node, temp_visited, 4)
     te_nanosec = time.time_ns()
     time_hx += te_nanosec - t_nanosec
     t_nanosec = time.time_ns()
