@@ -21,9 +21,9 @@ def fun_heuristic_recursive(graphmap, current, visited, n):
     for i in range(len(graphmap)):
         if(i in visited):
             continue
-        tempvisited = visited.copy()
-        tempvisited.append(i)
-        a = graphmap[current][i] + fun_heuristic_recursive(graphmap, i, tempvisited, n - 1)
+        visited.append(i)
+        a = graphmap[current][i] + fun_heuristic_recursive(graphmap, i, visited, n - 1)
+        visited.remove(i)
         if(a == 0):
             continue
         if min == 0 or a < min:
@@ -40,11 +40,6 @@ def fun_heuristic(graphmap, current, visited, n):
     global dict_heuristic
     if key in dict_heuristic:
         return dict_heuristic[key]
-    
-    # global sorted
-    # if sorted == False:
-    #   findMin(graphmap)
-    #   sorted = True
     global minpath
     fix = max(0, (len(graphmap) - len(visited) - n)) * minpath
     heuristic = []
@@ -55,7 +50,6 @@ def fun_heuristic(graphmap, current, visited, n):
         if(n == 0):
             heuristic.append(0)
             continue
-#        tempvisited = visited.copy()
         visited.append(i)
         a = graphmap[current][i] + fun_heuristic_recursive(graphmap, i, visited, n - 1) + fix
         visited.remove(i)
