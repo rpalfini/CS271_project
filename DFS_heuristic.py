@@ -10,19 +10,19 @@ import inputTransformer
 # 1.graph with edge weight
 # 2.store the path
 
-
 import time 
 time_dfs = 0
 time_hx = 0
 
-#genrate graph
+# genrate graph
 g = Digraph('G')
-g.attr(compound = 'true')
+g.attr(compound='true')
 DFS_number = 0
+
 
 def DFS(startnode, adj_matrix, node, need_visit, path, visited):
 
-    #time
+    # time
     t_nanosec = time.time_ns()
     global total_t
     global time_dfs
@@ -30,33 +30,32 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     total_t += 1
     #
 
-    #path
+    # path
     global p
     global temp_p
     global upper_bound
     #
 
-    #graph
+    # graph
     global DFS_number
     global g
     #
 
-    curr_node = str(node) +'|' + str(DFS_number)
+    curr_node = str(node) + '|' + str(DFS_number)
     # break condition
     if path > upper_bound:
-        g.edge(curr_node,'terminated'+str(path))
+        g.edge(curr_node, 'terminated' + str(path))
         return
 
     temp_p.append(node)
 
-    #update this time complexicty. make deep copy of list,increase space complexcity, may need to add node back in future/not linear space?
-    temp_need_visit = copy.deepcopy(need_visit)
-    temp_need_visit.remove(node)
+    # update this time complexicty. make deep copy of list,increase space complexcity, may need to add node back in future/not linear space?
+
     temp_visited = copy.deepcopy(visited)
     temp_visited.append(node)
-    
+    N = len(adj_matrix)
     # visit all the node,return the path
-    if not temp_need_visit:
+    if len(temp_visited) == N:
         new_distance = path + adj_matrix[node][Start_node]
         if new_distance <= upper_bound:
             upper_bound = new_distance
@@ -87,8 +86,8 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     l = len(hxc)
     N = len(graph)
     while(count < l):
-        if(hxc[count] <= 0):
-            break
+        # if(hxc[count] <= 0):
+        #    break
         for i in range(0, N):
             if hx[i] == hxc[count]:
                sorted_need.append(i)
@@ -117,7 +116,7 @@ total_t = 0
 
 p = []
 temp_p = []
-
+heuristic.findMin(graph)
 time_nanosec = time.time_ns()
 DFS(Start_node, graph, Start_node, need_visit, 0, v_visited)
 time_nanosec_end = time.time_ns()
@@ -125,13 +124,12 @@ time_nanosec_end = time.time_ns()
 p.append(Start_node)
 
 distance_verify = 0
-#verfiy
-for i in range(0,len(p)-1):
- distance_verify += graph[p[i]][p[i+1]]
-print('path: ',p)
-print('path_verify:',distance_verify)
+# verfiy
+for i in range(0, len(p) - 1):
+ distance_verify += graph[p[i]][p[i + 1]]
+print('path: ', p)
+print('path_verify:', distance_verify)
 #
-
 
 print("shortest path cost: " + str(upper_bound))
 print("cost to loop: " + str(total_t))
@@ -142,4 +140,4 @@ print("cost to loop all: " + str(t))
 print("dfs ns time: " + str(time_dfs))
 print("hx ns time: " + str(time_hx))
 
-#g.render('1.png', format='png')
+# g.render('1.png', format='png')
