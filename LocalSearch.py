@@ -17,7 +17,7 @@ def random_permutation(N):
 def calc_cost(path, adj_matrix):
 	cost = 0
 	N = len(adj_matrix)
-	for i in range(N - 2):
+	for i in range(N - 1):
 		cost += adj_matrix[path[i]][path[i + 1]]
 	cost += adj_matrix[path[N - 1]][path[0]]
 	return cost
@@ -31,7 +31,7 @@ def swap(path, idx_node1, idx_node2):
 
 
 def Prob(p):
-	return random.randint(0, 100) > p
+	return random.randint(0, 100) < p
 
 
 def SLS(path, adj_matrix):
@@ -40,17 +40,23 @@ def SLS(path, adj_matrix):
 	best_cost = calc_cost(best_solution, adj_matrix)
 	cost = N * 5000
 	p = 1
-	for node1 in range(N):
-		for node2 in range(N):
-			if(node1 == node2):
-				continue
-			swap(path, node1, node2)
-			new_cost = calc_cost(path, adj_matrix)
-			if(new_cost < cost or Prob(p) == True):
-				cost = new_cost
-				best_solution = path.copy()
-			else:
+	search = True
+	while search:
+		search = False
+		for node1 in range(N):
+			for node2 in range(N):
+				if(node1 == node2):
+					continue
 				swap(path, node1, node2)
+				new_cost = calc_cost(path, adj_matrix)
+				if(new_cost < cost or Prob(p) == True):
+					cost = new_cost
+					best_solution = path.copy()
+					# print(best_solution)
+					# print(cost)
+					search = True
+				else:
+					swap(path, node1, node2)
 	return best_solution
 
 
@@ -60,7 +66,8 @@ N = len(adjacency_matrix)
 best_overall = []
 best_overall_cost = N * 5000
 list_searched = []
-while True:
+count = 500
+while count > 0:
 	path_random = random_permutation(N)
 	not_converged = True
 	if(path_random in list_searched):
@@ -76,3 +83,4 @@ while True:
 			print(best_solution)
 			best_overall_cost = calc_cost(best_solution, adjacency_matrix)
 			print(best_overall_cost)
+	count -= 1
