@@ -1,8 +1,13 @@
+
 dict_heuristic = {}
 minpath = -1
+len_Graph = -1
 
 
 def findMin(graphmap):
+    global len_Graph
+    global minpath
+    len_Graph = len(graphmap)
     minpath = -1
     for arr in graphmap:
         for i in arr:
@@ -14,11 +19,12 @@ def findMin(graphmap):
 
 # don't call this method
 def fun_heuristic_recursive(graphmap, current, visited, n):
-    if(n == 0 or (len(visited) == len(graphmap))):
+    global len_Graph
+    if(n == 0 or (len(visited) == len_Graph)):
     #    return graphmap[current][start]
         return 0
     min = 0
-    for i in range(len(graphmap)):
+    for i in range(len_Graph):
         if(i in visited):
             continue
         visited.append(i)
@@ -40,10 +46,11 @@ def fun_heuristic(graphmap, current, visited, n):
     global dict_heuristic
     if key in dict_heuristic:
         return dict_heuristic[key]
+    global len_Graph
     global minpath
-    fix = max(0, (len(graphmap) - len(visited) - n)) * minpath
+    fix = max(0, (len_Graph - len(visited) - n)) * minpath
     heuristic = []
-    for i in range(len(graphmap)):
+    for i in range(len_Graph):
         if(i in visited):
             heuristic.append(-1)
             continue

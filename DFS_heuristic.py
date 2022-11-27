@@ -51,11 +51,11 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
 
     # update this time complexicty. make deep copy of list,increase space complexcity, may need to add node back in future/not linear space?
 
-    temp_visited = copy.deepcopy(visited)
-    temp_visited.append(node)
+    # temp_visited = copy.deepcopy(visited)
+    visited.append(node)
     N = len(adj_matrix)
     # visit all the node,return the path
-    if len(temp_visited) == N:
+    if len(visited) == N:
         new_distance = path + adj_matrix[node][Start_node]
         if new_distance <= upper_bound:
             upper_bound = new_distance
@@ -65,13 +65,14 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
             g.edge(curr_node, 'terminated|' + str(new_distance))
 
         temp_p.remove(node)
+        visited.remove(node)
         return
 
     #
     te_nanosec = time.time_ns()
     time_dfs += te_nanosec - t_nanosec
     t_nanosec = time.time_ns()
-    hx = heuristic.fun_heuristic(adj_matrix, node, temp_visited, 4)
+    hx = heuristic.fun_heuristic(adj_matrix, node, visited, 3)
     te_nanosec = time.time_ns()
     time_hx += te_nanosec - t_nanosec
     t_nanosec = time.time_ns()
@@ -80,6 +81,7 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     if(path + hxc[0] > upper_bound):
         temp_p.remove(node)
         g.edge(curr_node, 'terminated|' + str(path + hxc[0]))
+        visited.remove(node)
         return
     count = 0
     sorted_need = []
@@ -97,8 +99,9 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     time_dfs += te_nanosec - t_nanosec
 
     for i in sorted_need:
-        DFS(startnode, adj_matrix, i, sorted_need, path + adj_matrix[node][i], temp_visited)
+        DFS(startnode, adj_matrix, i, sorted_need, path + adj_matrix[node][i], visited)
     temp_p.remove(node)
+    visited.remove(node)
     return
 
 
@@ -106,7 +109,7 @@ file_input = open("11_5.0_1.0.out", "r")
 graph = inputTransformer.getInput(file_input)
 N = len(graph)
 Start_node = 0
-need_visit = [i for i in range(0, N)]  # + [Start_node]
+need_visit = {i for i in range(0, N)}  # + [Start_node]
 
 # 3/2 MST
 upper_bound = 100000 * N
