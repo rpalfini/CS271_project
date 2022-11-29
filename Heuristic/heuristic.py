@@ -16,6 +16,7 @@ def findMin(graphmap):
             minpath.append(i)
     minpath.sort()
 
+
 # don't call this method
 def fun_heuristic_recursive(graphmap, current, visited, n):
     global len_Graph
@@ -48,8 +49,8 @@ def fun_heuristic(graphmap, current, visited, n):
     global len_Graph
     global minpath
     fix = 0
-    for i in range(0,max(0, (len_Graph - len(visited) - n))):
-        fix+=minpath[i]
+    for i in range(0, max(0, (len_Graph - len(visited) - n))):
+        fix += minpath[i]
     heuristic = []
     for i in range(len_Graph):
         if(i in visited):
