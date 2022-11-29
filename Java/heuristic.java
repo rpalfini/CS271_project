@@ -24,9 +24,7 @@ public class heuristic {
 			}
 			minpath.add(min);
 		}
-		// Collections.sort(minpath);
 	}
-
 
 	// this heuristic will only check next n steps and return smallest path value of
 	// next step for n steps

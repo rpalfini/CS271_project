@@ -6,34 +6,26 @@ import java.util.List;
 public class DFS_H {
 
 	public static double upper_bound = Double.MAX_VALUE;
-	public static long time_dfs = 0;
-	public static long time_hx = 0;
-	public static int total_t = 0;
+	// public static long time_dfs = 0;
+	// public static long time_hx = 0;
+	// public static int total_t = 0;
 	public static List<Integer> p = new ArrayList<Integer>();
 	public static List<Integer> temp_p = new ArrayList<Integer>();
 
-	public static void DFS(int startnode, double[][] adj_matrix, int node, List<Integer> need_visit, double path,
-			List<Integer> visited) {
-		// time
-		long t_msec = System.nanoTime();
+	public static void DFS(int startnode, double[][] adj_matrix, int node, double path, List<Integer> visited) {
+		/* timing */
+		// long t_msec = System.nanoTime();
+		// total_t += 1;
 
-		total_t += 1;
-		//
-
-		// break condition
+		/* break condition */
 		if (path > upper_bound) {
 			return;
 		}
 
 		temp_p.add(node);
 
-		// update this time complexicty. make deep copy of list,increase space
-		// complexcity, may need to add node back in future/not linear space?
-
-		// temp_visited = copy.deepcopy(visited)
 		visited.add(node);
-		// int N = adj_matrix.length;
-		// visit all the node,return the path
+		/* visit all the node,return the path */
 		if (visited.size() == heuristic.len_Graph) {
 			double new_distance = path + adj_matrix[node][startnode];
 			if (new_distance <= upper_bound) {
@@ -47,15 +39,17 @@ public class DFS_H {
 			visited.remove((Object) node);
 			return;
 		}
-		//
 
-		long te_msec = System.nanoTime();
-		time_dfs += te_msec - t_msec;
-		t_msec = System.nanoTime();
+		// long te_msec = System.nanoTime();
+		// time_dfs += te_msec - t_msec;
+		// t_msec = System.nanoTime();
+
 		double[] hx = heuristic.fun_heuristic(adj_matrix, node, visited, 4);
-		te_msec = System.nanoTime();
-		time_hx += te_msec - t_msec;
-		t_msec = System.nanoTime();
+
+		// te_msec = System.nanoTime();
+		// time_hx += te_msec - t_msec;
+		// t_msec = System.nanoTime();
+
 		List<Double> hxc = new ArrayList<Double>();
 		int count = 0;
 		for (double d : hx) {
@@ -79,7 +73,6 @@ public class DFS_H {
 		while (count < l) {
 			for (int i = 0; i < heuristic.len_Graph; i++) {
 				if (hx[i] == hxc.get(count)) {
-					// System.out.println(hxc.get(count));
 					sorted_need.add(i);
 					count += 1;
 					break;
@@ -87,15 +80,13 @@ public class DFS_H {
 			}
 		}
 
-		te_msec = System.nanoTime();
-		time_dfs += te_msec - t_msec;
+		// te_msec = System.nanoTime();
+		// time_dfs += te_msec - t_msec;
 
-		for (int a = 0; a < sorted_need.size(); a++) {
-			int i = sorted_need.get(a);
-			// System.out.print(i + " ");
-			DFS(startnode, adj_matrix, i, sorted_need, path + adj_matrix[node][i], visited);
+		for (int i : sorted_need) {
+			DFS(startnode, adj_matrix, i, path + adj_matrix[node][i], visited);
 		}
-		// System.out.println();
+
 		temp_p.remove((Object) node);
 		visited.remove((Object) node);
 		return;
@@ -104,43 +95,39 @@ public class DFS_H {
 	public static void main(String[] args) {
 		File file_input = new File("16_5.0_1.0.out");
 		double[][] graph = input_trans.getInput(file_input);
-		int N = graph.length;
+		heuristic.findMin(graph);
 		int Start_node = 0;
-		List<Integer> need_visit = new ArrayList<Integer>();
-		for (int i = 0; i < N; i++) {
-			need_visit.add(i);
-		}
 
-		// 3/2 MST
-		// upper_bound = 100000 * N;
 		List<Integer> v_visited = new ArrayList<Integer>();
 
-		heuristic.findMin(graph);
-		// long time_msec = System.nanoTime()
-		DFS(Start_node, graph, Start_node, need_visit, 0, v_visited);
-		// long time_msec_end = System.nanoTime()
+		long time_msec = System.nanoTime();
+
+		DFS(Start_node, graph, Start_node, 0, v_visited);
+
+		long time_msec_end = System.nanoTime();
 
 		p.add(Start_node);
 
+		System.out.println("path: " + p);
+
+		/* verfiy */
 		double distance_verify = 0;
-		// verfiy
 		for (int i = 0; i < p.size() - 1; i++) {
 			distance_verify += graph[p.get(i)][p.get(i + 1)];
 		}
-		System.out.println("path: " + p);
+
 		System.out.println("path_verify:" + distance_verify);
-		//
-
 		System.out.println("shortest path cost: " + upper_bound);
-		System.out.println("cost to loop: " + total_t);
-		int t = 1;
-		for (int i = 1; i < N; i++) {
-			t *= i;
-		}
-		System.out.println("cost to loop all: " + t);
-		System.out.println("dfs ns time: " + time_dfs);
-		System.out.println("hx ns time: " + time_hx);
+		// System.out.println("cost to loop: " + total_t);
 
-		// g.render('1.png', format='png')
+		// int t = 1;
+		// for (int i = 1; i < heuristic.len_Graph; i++) {
+		// t *= i;
+		// }
+
+		// System.out.println("cost to loop all: " + t);
+		// System.out.println("dfs ns time: " + time_dfs);
+		// System.out.println("hx ns time: " + time_hx);
+		System.out.println("total ns time: " + (time_msec_end - time_msec));
 	}
 }
