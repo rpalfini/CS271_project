@@ -13,43 +13,25 @@ public class heuristic {
 		len_Graph = map.length;
 		minpath.clear();
 		for (double[] arr : map) {
+			double min = Double.MAX_VALUE;
 			for (double i : arr) {
 				if (i <= 0) {
 					continue;
 				}
-				minpath.add(i);
+				if (i < min) {
+					min = i;
+				}
 			}
+			minpath.add(min);
 		}
-		Collections.sort(minpath);
+		// Collections.sort(minpath);
 	}
 
-	public static double fun_heuristic_recursive(double[][] graphmap, int current, List<Integer> visited, int n) {
-		if (n == 0 || (visited.size() == graphmap.length)) {
-			// return graphmap[current][start]
-			return 0;
-		}
-		double min = 0;
-		for (int i = 0; i < graphmap.length; i++) {
-			if (visited.contains(i)) {
-				continue;
-			}
-			visited.add(i);
-			double a = graphmap[current][i] + fun_heuristic_recursive(graphmap, i, visited, n - 1);
-			visited.remove((Object) i);
-			if (a == 0) {
-				continue;
-			}
-			if (min == 0 || a < min) {
-				min = a;
-				continue;
-			}
-		}
-		return min;
-	}
 
 	// this heuristic will only check next n steps and return smallest path value of
 	// next step for n steps
 	// input different n may help with the speed and memory usage
+
 	public static double[] fun_heuristic(double[][] graphmap, int current, List<Integer> visited, int n) {
 		Collections.sort(visited);
 		String key = "" + current;
@@ -60,15 +42,14 @@ public class heuristic {
 			return dict.get(key);
 		}
 		double fix = 0;
-		for (int i = 0; i < Math.max(0, (len_Graph - visited.size() - n)); i++) {
+		for (int i = 0; i < graphmap.length; i++) {
+			if (visited.contains(i)) {
+				continue;
+			}
 			fix += minpath.get(i);
 		}
 		double[] heuristic = new double[len_Graph];
 		for (int i = 0; i < len_Graph; i++) {
-			if (n == 0) {
-				heuristic[i] = 0d;
-				continue;
-			}
 			if (visited.contains(i)) {
 				heuristic[i] = -1d;
 				continue;
@@ -82,4 +63,25 @@ public class heuristic {
 		return heuristic;
 	}
 
+	public static double fun_heuristic_recursive(double[][] graphmap, int current, List<Integer> visited, int n) {
+		if (n == 0 || (visited.size() == graphmap.length)) {
+			return -minpath.get(current);
+		}
+
+		double min = Double.MAX_VALUE;
+		for (int i = 0; i < graphmap.length; i++) {
+			if (visited.contains(i)) {
+				continue;
+			}
+			visited.add(i);
+			double a = graphmap[current][i] + fun_heuristic_recursive(graphmap, i, visited, n - 1)
+					- minpath.get(current);
+			visited.remove((Object) i);
+			if (a < min) {
+				min = a;
+				continue;
+			}
+		}
+		return min;
+	}
 }

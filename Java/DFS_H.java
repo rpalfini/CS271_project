@@ -52,7 +52,7 @@ public class DFS_H {
 		long te_msec = System.nanoTime();
 		time_dfs += te_msec - t_msec;
 		t_msec = System.nanoTime();
-		double[] hx = heuristic.fun_heuristic(adj_matrix, node, visited, 3);
+		double[] hx = heuristic.fun_heuristic(adj_matrix, node, visited, 4);
 		te_msec = System.nanoTime();
 		time_hx += te_msec - t_msec;
 		t_msec = System.nanoTime();
@@ -102,7 +102,7 @@ public class DFS_H {
 	}
 
 	public static void main(String[] args) {
-		File file_input = new File("11_5.0_1.0.out");
+		File file_input = new File("16_5.0_1.0.out");
 		double[][] graph = input_trans.getInput(file_input);
 		int N = graph.length;
 		int Start_node = 0;
