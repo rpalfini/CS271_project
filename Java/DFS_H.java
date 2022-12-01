@@ -53,7 +53,7 @@ public class DFS_H {
 		List<Double> hxc = new ArrayList<Double>();
 		int count = 0;
 		for (double d : hx) {
-			if (d <= 0) {
+			if (d <= 0 || path + d > upper_bound) {
 				continue;
 			}
 			hxc.add(d);
@@ -67,10 +67,6 @@ public class DFS_H {
 
 		while (count < l) {
 			for (int i = 0; i < heuristic.len_Graph; i++) {
-				if (path + hxc.get(count) > upper_bound) {
-					count += 1;
-					break;
-				}
 				if (hx[i] == hxc.get(count)) {
 					sorted_need.add(i);
 					count += 1;
