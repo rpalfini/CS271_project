@@ -1,10 +1,9 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 public class heuristic {
-	public static HashMap<String, double[]> dict = new HashMap<String, double[]>();
+	public static HashMap<Long, double[]> dict = new HashMap<Long, double[]>();
 	public static boolean searched = false;
 	public static int len_Graph = 0;
 	public static List<Double> minpath = new ArrayList<Double>();
@@ -26,16 +25,23 @@ public class heuristic {
 		}
 	}
 
+	private static long genKey(List<Integer> visited, int current) {
+		long result = current;
+		// result = ((1 << 0) | result);
+		for (int i : visited) {
+			result = ((1 << 64 - i) | result);
+		}
+		// System.out.println(result);
+		return result;
+	}
+
 	// this heuristic will only check next n steps and return smallest path value of
 	// next step for n steps
 	// input different n may help with the speed and memory usage
-
 	public static double[] fun_heuristic(double[][] graphmap, int current, List<Integer> visited, int n) {
-		Collections.sort(visited);
-		String key = "" + current;
-		for (int i : visited) {
-			key += i;
-		}
+		// Collections.sort(visited);
+		long key = genKey(visited, current);
+
 		if (dict.containsKey(key)) {
 			return dict.get(key);
 		}

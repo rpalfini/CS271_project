@@ -4,6 +4,13 @@ minpath = []
 len_Graph = -1
 
 
+def getKey(visited, current):
+    n = current
+    for i in visited:
+        n = (1 << (64 - i) | n)
+    return n
+
+
 def findMin(graphmap):
     global len_Graph
     global minpath
@@ -44,8 +51,9 @@ def fun_heuristic_recursive(graphmap, current, visited, n):
 # this heuristic will only check next n steps and return smallest path value of next step for n steps
 # input different n may help with the speed and memory usage
 def fun_heuristic(graphmap, current, visited, n):
-    visited.sort()
-    key = str(current) + str(visited)
+    # visited.sort()
+    # key = str(current) + str(visited)
+    key = getKey(visited, current)
     global dict_heuristic
     if key in dict_heuristic:
         return dict_heuristic[key]
