@@ -87,9 +87,10 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     sorted_need = []
     l = len(hxc)
     while(count < l):
-        # if(hxc[count] <= 0):
-        #    break
         for i in range(0, N):
+            if path + hxc[count] > upper_bound:
+                count += 1;
+                break;
             if hx[i] == hxc[count]:
                sorted_need.append(i)
                count += 1

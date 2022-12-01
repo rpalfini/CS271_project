@@ -39,20 +39,19 @@ public class heuristic {
 	// next step for n steps
 	// input different n may help with the speed and memory usage
 	public static double[] fun_heuristic(double[][] graphmap, int current, List<Integer> visited, int n) {
-		// Collections.sort(visited);
 		long key = genKey(visited, current);
 
 		if (dict.containsKey(key)) {
 			return dict.get(key);
 		}
 		double fix = 0;
+		double[] heuristic = new double[len_Graph];
 		for (int i = 0; i < graphmap.length; i++) {
 			if (visited.contains(i)) {
 				continue;
 			}
 			fix += minpath.get(i);
 		}
-		double[] heuristic = new double[len_Graph];
 		for (int i = 0; i < len_Graph; i++) {
 			if (visited.contains(i)) {
 				heuristic[i] = -1d;

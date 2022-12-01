@@ -61,17 +61,16 @@ public class DFS_H {
 		}
 		Collections.sort(hxc);
 
-		if (path + hxc.get(0) > upper_bound) {
-			temp_p.remove((Object) node);
-			visited.remove((Object) node);
-			return;
-		}
 		count = 0;
 		List<Integer> sorted_need = new ArrayList<Integer>();
 		int l = hxc.size();
 
 		while (count < l) {
 			for (int i = 0; i < heuristic.len_Graph; i++) {
+				if (path + hxc.get(count) > upper_bound) {
+					count += 1;
+					break;
+				}
 				if (hx[i] == hxc.get(count)) {
 					sorted_need.add(i);
 					count += 1;
@@ -84,6 +83,7 @@ public class DFS_H {
 		// time_dfs += te_msec - t_msec;
 
 		for (int i : sorted_need) {
+
 			DFS(startnode, adj_matrix, i, path + adj_matrix[node][i], visited);
 		}
 
@@ -93,7 +93,7 @@ public class DFS_H {
 	}
 
 	public static void main(String[] args) {
-		File file_input = new File("16_5.0_1.0.out");
+		File file_input = new File("17_5.0_1.0.out");
 		double[][] graph = input_trans.getInput(file_input);
 		heuristic.findMin(graph);
 		int Start_node = 0;
