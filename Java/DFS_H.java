@@ -17,11 +17,6 @@ public class DFS_H {
 		// long t_msec = System.nanoTime();
 		// total_t += 1;
 
-		/* break condition */
-		if (path > upper_bound) {
-			return;
-		}
-
 		temp_p.add(node);
 
 		visited.add(node);
@@ -53,6 +48,7 @@ public class DFS_H {
 		List<Double> hxc = new ArrayList<Double>();
 		int count = 0;
 		for (double d : hx) {
+			/* break condition */
 			if (d <= 0 || path + d > upper_bound) {
 				continue;
 			}
