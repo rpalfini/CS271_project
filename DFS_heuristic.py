@@ -15,9 +15,9 @@ time_dfs = 0
 time_hx = 0
 
 # genrate graph
-#g = Digraph('G')
-#g.attr(compound='true')
-#DFS_number = 0
+# g = Digraph('G')
+# g.attr(compound='true')
+# DFS_number = 0
 
 
 def DFS(startnode, adj_matrix, node, need_visit, path, visited):
@@ -37,15 +37,15 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     #
 
     # graph
-    #global DFS_number
-    #global g
+    # global DFS_number
+    # global g
     #
 
-    #curr_node = str(node) + '|' + str(DFS_number)
+    # curr_node = str(node) + '|' + str(DFS_number)
     # break condition
-    if path > upper_bound:
-        #g.edge(curr_node, 'terminated' + str(path))
-        return
+    #if path > upper_bound:
+        # g.edge(curr_node, 'terminated' + str(path))
+    #    return
 
     temp_p.append(node)
 
@@ -61,7 +61,7 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
             upper_bound = new_distance
             p = copy.deepcopy(temp_p)
         #    g.edge(curr_node, 'solution|' + str(new_distance))
-        #else:
+        # else:
         #    g.edge(curr_node, 'terminated|' + str(new_distance))
 
         temp_p.remove(node)
@@ -72,7 +72,7 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     te_nanosec = time.time_ns()
     time_dfs += te_nanosec - t_nanosec
     t_nanosec = time.time_ns()
-    hx = heuristic.fun_heuristic(adj_matrix, node, visited, 3)
+    hx = heuristic.fun_heuristic(upper_bound - path, adj_matrix, node, visited, 3)
     te_nanosec = time.time_ns()
     time_hx += te_nanosec - t_nanosec
     t_nanosec = time.time_ns()
@@ -80,7 +80,7 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     hxc.sort()
     if(path + hxc[0] > upper_bound):
         temp_p.remove(node)
-        #g.edge(curr_node, 'terminated|' + str(path + hxc[0]))
+        # g.edge(curr_node, 'terminated|' + str(path + hxc[0]))
         visited.remove(node)
         return
     count = 0
