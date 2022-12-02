@@ -6,7 +6,7 @@ public class heuristic {
 	public static HashMap<Long, double[]> dict = new HashMap<Long, double[]>();
 	public static boolean searched = false;
 	public static int len_Graph = 0;
-	public static List<Double> minpath = new ArrayList<Double>();
+	public static List<Double> minpath = new ArrayList<Double>(heuristic.len_Graph);
 
 	public static void findMin(double[][] map) {
 		len_Graph = map.length;
@@ -27,17 +27,13 @@ public class heuristic {
 
 	private static long genKey(List<Integer> visited, int current) {
 		long result = current;
-		// result = ((1 << 0) | result);
 		for (int i : visited) {
 			result = ((1 << 64 - i) | result);
 		}
-		// System.out.println(result);
 		return result;
 	}
 
-	// this heuristic will only check next n steps and return smallest path value of
-	// next step for n steps
-	// input different n may help with the speed and memory usage
+	// input different n(steps) may help with the speed and memory usage
 	public static double[] fun_heuristic(double max, double[][] graphmap, int current, List<Integer> visited, int n) {
 		long key = genKey(visited, current);
 
@@ -46,7 +42,7 @@ public class heuristic {
 		}
 		double fix = 0;
 		double[] heuristic = new double[len_Graph];
-		for (int i = 0; i < graphmap.length; i++) {
+		for (int i = 0; i < len_Graph; i++) {
 			if (visited.contains(i)) {
 				continue;
 			}
@@ -66,16 +62,17 @@ public class heuristic {
 		return heuristic;
 	}
 
-	public static double fun_heuristic_recursive(double max, double cost, double[][] graphmap, int current,
+	//don't call this unless you know what you are doing
+	private static double fun_heuristic_recursive(double max, double cost, double[][] graphmap, int current,
 			List<Integer> visited, int n) {
 		if (cost >= max) {
 			return cost;
 		}
-		if (n == 0 || (visited.size() == graphmap.length)) {
+		if (n == 0 || (visited.size() == len_Graph)) {
 			return cost;
 		}
 		double min = Double.MAX_VALUE;
-		for (int i = 0; i < graphmap.length; i++) {
+		for (int i = 0; i < len_Graph; i++) {
 			if (visited.contains(i)) {
 				continue;
 			}

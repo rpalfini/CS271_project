@@ -18,9 +18,9 @@ public class DFS_H {
 		// total_t += 1;
 
 		temp_p.add(node);
-
 		visited.add(node);
-		/* visit all the node,return the path */
+
+		/* visited last node,return the path if better */
 		if (visited.size() == heuristic.len_Graph) {
 			double new_distance = path + adj_matrix[node][startnode];
 			if (new_distance <= upper_bound) {
@@ -55,10 +55,9 @@ public class DFS_H {
 		}
 		Collections.sort(hxc);
 
-		int count = 0;
 		List<Integer> sorted_need = new ArrayList<Integer>(heuristic.len_Graph);
 		int l = hxc.size();
-
+		int count = 0;
 		while (count < l) {
 			double d = hxc.get(count);
 			for (int i = 0; i < heuristic.len_Graph; i++) {
