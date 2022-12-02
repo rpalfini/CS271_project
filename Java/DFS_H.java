@@ -45,7 +45,7 @@ public class DFS_H {
 		// time_hx += te_msec - t_msec;
 		// t_msec = System.nanoTime();
 
-		List<Double> hxc = new ArrayList<Double>();
+		List<Double> hxc = new ArrayList<Double>(heuristic.len_Graph);
 		for (double d : hx) {
 			/* break condition */
 			if (d <= 0 || path + d > upper_bound) {
@@ -56,12 +56,13 @@ public class DFS_H {
 		Collections.sort(hxc);
 
 		int count = 0;
-		List<Integer> sorted_need = new ArrayList<Integer>();
+		List<Integer> sorted_need = new ArrayList<Integer>(heuristic.len_Graph);
 		int l = hxc.size();
 
 		while (count < l) {
+			double d = hxc.get(count);
 			for (int i = 0; i < heuristic.len_Graph; i++) {
-				if (hx[i] == hxc.get(count)) {
+				if (hx[i] == d) {
 					sorted_need.add(i);
 					count += 1;
 					break;
@@ -87,7 +88,7 @@ public class DFS_H {
 		heuristic.findMin(graph);
 		int Start_node = 0;
 
-		List<Integer> v_visited = new ArrayList<Integer>();
+		List<Integer> v_visited = new ArrayList<Integer>(heuristic.len_Graph);
 
 		long time_msec = System.nanoTime();
 
