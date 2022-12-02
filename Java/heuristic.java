@@ -4,11 +4,13 @@ import java.util.List;
 
 public class heuristic {
 	public static HashMap<Long, double[]> dict = new HashMap<Long, double[]>();
+	public static HashMap<Long, double[]> dict2 = new HashMap<Long, double[]>();
 	public static boolean searched = false;
 	public static int len_Graph = 0;
 	public static List<Double> minpath = new ArrayList<Double>(heuristic.len_Graph);
+	public static boolean mode;
 
-	public static void findMin(double[][] map) {
+	public static boolean init(double[][] map) {
 		len_Graph = map.length;
 		minpath.clear();
 		for (double[] arr : map) {
@@ -23,12 +25,19 @@ public class heuristic {
 			}
 			minpath.add(min);
 		}
+
+		double size = (Math.pow(2, len_Graph) * len_Graph / 0.75) + 1;
+		if (size < Integer.MAX_VALUE) {
+			dict = new HashMap<Long, double[]>((int) size);
+			return mode = true;
+		}
+		return mode = false;
 	}
 
 	private static long genKey(List<Integer> visited, int current) {
 		long result = current;
 		for (int i : visited) {
-			result = ((1 << 64 - i) | result);
+			result = ((1 << (63 - i)) | result);
 		}
 		return result;
 	}
@@ -62,7 +71,7 @@ public class heuristic {
 		return heuristic;
 	}
 
-	//don't call this unless you know what you are doing
+	// don't call this unless you know what you are doing
 	private static double fun_heuristic_recursive(double max, double cost, double[][] graphmap, int current,
 			List<Integer> visited, int n) {
 		if (cost >= max) {
@@ -86,5 +95,28 @@ public class heuristic {
 			}
 		}
 		return min;
+	}
+
+	public static double[] fun_nodict_heuristic(double max, double[][] graphmap, int current, List<Integer> visited,
+			int n) {
+		double fix = 0;
+		double[] heuristic = new double[len_Graph];
+		for (int i = 0; i < len_Graph; i++) {
+			if (visited.contains(i)) {
+				continue;
+			}
+			fix += minpath.get(i);
+		}
+		for (int i = 0; i < len_Graph; i++) {
+			if (visited.contains(i)) {
+				heuristic[i] = -1d;
+				continue;
+			}
+			visited.add(i);
+			double a = fun_heuristic_recursive(max, graphmap[current][i] + fix, graphmap, i, visited, n - 1);
+			visited.remove((Object) i);
+			heuristic[i] = a;
+		}
+		return heuristic;
 	}
 }

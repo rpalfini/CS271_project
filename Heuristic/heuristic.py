@@ -7,7 +7,7 @@ len_Graph = -1
 def getKey(visited, current):
     n = current
     for i in visited:
-        n = (1 << (64 - i) | n)
+        n = (1 << (63 - i) | n)
     return n
 
 
