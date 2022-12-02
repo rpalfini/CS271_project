@@ -46,18 +46,16 @@ public class DFS_H {
 		// t_msec = System.nanoTime();
 
 		List<Double> hxc = new ArrayList<Double>();
-		int count = 0;
 		for (double d : hx) {
 			/* break condition */
 			if (d <= 0 || path + d > upper_bound) {
 				continue;
 			}
 			hxc.add(d);
-			count++;
 		}
 		Collections.sort(hxc);
 
-		count = 0;
+		int count = 0;
 		List<Integer> sorted_need = new ArrayList<Integer>();
 		int l = hxc.size();
 
@@ -75,7 +73,6 @@ public class DFS_H {
 		// time_dfs += te_msec - t_msec;
 
 		for (int i : sorted_need) {
-
 			DFS(startnode, adj_matrix, i, path + adj_matrix[node][i], visited);
 		}
 
