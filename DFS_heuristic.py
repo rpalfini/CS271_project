@@ -43,7 +43,7 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
 
     # curr_node = str(node) + '|' + str(DFS_number)
     # break condition
-    #if path > upper_bound:
+    # if path > upper_bound:
         # g.edge(curr_node, 'terminated' + str(path))
     #    return
 
@@ -76,21 +76,19 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     te_nanosec = time.time_ns()
     time_hx += te_nanosec - t_nanosec
     t_nanosec = time.time_ns()
-    hxc = list(filter(lambda a: a != 0 and a != -1, hx))
+    hxc = []
+    for d in hx:
+        if d <= 0 or path + d > upper_bound:
+            # print(str(d) + " " + str(path + d) + ">" + str(upper_bound))
+            continue
+        hxc.append(d)
     hxc.sort()
-    if(path + hxc[0] > upper_bound):
-        temp_p.remove(node)
-        # g.edge(curr_node, 'terminated|' + str(path + hxc[0]))
-        visited.remove(node)
-        return
+
     count = 0
     sorted_need = []
     l = len(hxc)
     while(count < l):
         for i in range(0, N):
-            if path + hxc[count] > upper_bound:
-                count += 1;
-                break;
             if hx[i] == hxc[count]:
                sorted_need.append(i)
                count += 1
