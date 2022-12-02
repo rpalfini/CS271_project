@@ -78,9 +78,10 @@ while count > 0:
 		if str(best_solution) == str(path_random):
 			not_converged = False
 		path_random = best_solution
-		if(calc_cost(best_solution, adjacency_matrix) < best_overall_cost):
+		newcost = calc_cost(best_solution, adjacency_matrix)
+		if(newcost < best_overall_cost):
 			best_overall = best_solution
 			print(best_solution)
-			best_overall_cost = calc_cost(best_solution, adjacency_matrix)
+			best_overall_cost = newcost
 			print(best_overall_cost)
 	count -= 1

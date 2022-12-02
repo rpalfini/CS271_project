@@ -74,7 +74,7 @@ public class LocalSearch {
 
 	public static void main(String args[]) {
 
-		File file_input = new File("15_5.0_1.0.out");
+		File file_input = new File("20_5.0_1.0.out");
 		double[][] graph = input_trans.getInput(file_input);
 		int N = graph.length;
 		// List<Integer> best_overall = new LinkedList<Integer>();
@@ -94,10 +94,11 @@ public class LocalSearch {
 					not_converged = false;
 				}
 				path_random = best_solution;
-				if (calc_cost(best_solution, graph) < best_overall_cost) {
+				double newcost = calc_cost(best_solution, graph);
+				if (newcost < best_overall_cost) {
 					// best_overall = best_solution;
 					System.out.println(best_solution);
-					best_overall_cost = calc_cost(best_solution, graph);
+					best_overall_cost = newcost;
 					System.out.println(best_overall_cost);
 				}
 				count -= 1;
