@@ -8,7 +8,7 @@ public class DFS_H {
 	public static double upper_bound = Double.MAX_VALUE;
 	// public static long time_dfs = 0;
 	// public static long time_hx = 0;
-	// public static int total_t = 0;
+	// public static long total_t = 0;
 	public static List<Integer> p = new ArrayList<Integer>();
 	public static List<Integer> temp_p = new ArrayList<Integer>();
 
@@ -109,7 +109,7 @@ public class DFS_H {
 		System.out.println("shortest path cost: " + upper_bound);
 		// System.out.println("cost to loop: " + total_t);
 
-		// int t = 1;
+		// long t = 1;
 		// for (int i = 1; i < heuristic.len_Graph; i++) {
 		// t *= i;
 		// }
