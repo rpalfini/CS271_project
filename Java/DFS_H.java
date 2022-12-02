@@ -11,7 +11,6 @@ public class DFS_H {
 	// public static long total_t = 0;
 	public static List<Integer> p = new ArrayList<Integer>();
 	public static List<Integer> temp_p = new ArrayList<Integer>();
-	public static boolean mode;
 
 	public static void DFS(int startnode, double[][] adj_matrix, int node, double path, List<Integer> visited) {
 		/* timing */
@@ -40,13 +39,8 @@ public class DFS_H {
 		// time_dfs += te_msec - t_msec;
 		// t_msec = System.nanoTime();
 
-		double[] hx;
+		double[] hx = heuristic.fun_heuristic(upper_bound - path, adj_matrix, node, visited, 4);
 
-		if (mode) {
-			hx = heuristic.fun_heuristic(upper_bound - path, adj_matrix, node, visited, 4);
-		} else {
-			hx = heuristic.fun_nodict_heuristic(upper_bound - path, adj_matrix, node, visited, 4);
-		}
 		// te_msec = System.nanoTime();
 		// time_hx += te_msec - t_msec;
 		// t_msec = System.nanoTime();
@@ -94,7 +88,7 @@ public class DFS_H {
 	public static void main(String[] args) {
 		File file_input = new File("20_5.0_1.0.out");
 		double[][] graph = input_trans.getInput(file_input);
-		mode = heuristic.init(graph);
+		heuristic.init(graph);
 		int Start_node = 0;
 
 		List<Integer> v_visited = new ArrayList<Integer>(heuristic.len_Graph);

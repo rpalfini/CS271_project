@@ -8,7 +8,7 @@ public class heuristic {
 	public static boolean searched = false;
 	public static int len_Graph = 0;
 	public static List<Double> minpath = new ArrayList<Double>(heuristic.len_Graph);
-	public static boolean mode;
+	public static final int limit = (int) (Integer.MAX_VALUE * 0.75);
 
 	public static boolean init(double[][] map) {
 		len_Graph = map.length;
@@ -27,11 +27,9 @@ public class heuristic {
 		}
 
 		double size = (Math.pow(2, len_Graph) * len_Graph / 0.75) + 1;
-		if (size < Integer.MAX_VALUE) {
-			dict = new HashMap<Long, double[]>((int) size);
-			return mode = true;
-		}
-		return mode = false;
+		dict = new HashMap<Long, double[]>((int) size);
+		return true;
+
 	}
 
 	private static long genKey(List<Integer> visited, int current) {
@@ -66,6 +64,10 @@ public class heuristic {
 			double a = fun_heuristic_recursive(max, graphmap[current][i] + fix, graphmap, i, visited, n - 1);
 			visited.remove((Object) i);
 			heuristic[i] = a;
+		}
+		if (dict.size() > limit) {
+			System.out.println("clean");
+			dict.clear();
 		}
 		dict.put(key, heuristic);
 		return heuristic;
