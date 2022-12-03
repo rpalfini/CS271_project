@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class LocalSearch {
 	public static Random r = new Random();
+	public static final int max_size = 5000;
 
 	public static List<Integer> random_permutation(int N) {
 		List<Integer> list = new ArrayList<Integer>();
@@ -79,7 +80,7 @@ public class LocalSearch {
 		int N = graph.length;
 		// List<Integer> best_overall = new LinkedList<Integer>();
 		double best_overall_cost = N * 5000;
-		List<String> list_searched = new ArrayList<String>();
+		List<String> list_searched = new LinkedList<String>();
 		int count = 500;
 		while (count > 0) {
 			List<Integer> path_random = random_permutation(N);
@@ -88,6 +89,9 @@ public class LocalSearch {
 				continue;
 			}
 			list_searched.add(path_random.toString());
+			if (list_searched.size() > max_size) {
+				list_searched.remove(0);
+			}
 			while (not_converged) {
 				List<Integer> best_solution = SLS(path_random, graph);
 				if (best_solution.toString().equals(path_random.toString())) {
