@@ -4,11 +4,10 @@ import java.util.List;
 
 public class heuristic {
 	public static HashMap<Long, double[]> dict = new HashMap<Long, double[]>();
-	public static HashMap<Long, double[]> dict2 = new HashMap<Long, double[]>();
 	public static boolean searched = false;
 	public static int len_Graph = 0;
 	public static List<Double> minpath = new ArrayList<Double>(heuristic.len_Graph);
-	public static final int limit = (int) (Integer.MAX_VALUE * 0.75);
+	public static final int limit = 25165820;
 
 	public static boolean init(double[][] map) {
 		len_Graph = map.length;
@@ -25,9 +24,7 @@ public class heuristic {
 			}
 			minpath.add(min);
 		}
-
-		double size = (Math.pow(2, len_Graph) * len_Graph / 0.75) + 1;
-		dict = new HashMap<Long, double[]>((int) size);
+		dict = new HashMap<Long, double[]>(33554432);
 		return true;
 
 	}
@@ -35,7 +32,7 @@ public class heuristic {
 	private static long genKey(List<Integer> visited, int current) {
 		long result = current;
 		for (int i : visited) {
-			result = ((1 << (63 - i)) | result);
+			result = ((1L << (63 - i)) | result);
 		}
 		return result;
 	}
@@ -47,6 +44,7 @@ public class heuristic {
 		if (dict.containsKey(key)) {
 			return dict.get(key);
 		}
+
 		double fix = 0;
 		double[] heuristic = new double[len_Graph];
 		for (int i = 0; i < len_Graph; i++) {
@@ -65,9 +63,10 @@ public class heuristic {
 			visited.remove((Object) i);
 			heuristic[i] = a;
 		}
+
 		if (dict.size() > limit) {
-			System.out.println("clean");
 			dict.clear();
+			System.gc();
 		}
 		dict.put(key, heuristic);
 		return heuristic;

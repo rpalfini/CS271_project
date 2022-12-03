@@ -48,11 +48,18 @@ public class DFS_H {
 		List<Double> hxc = new ArrayList<Double>(heuristic.len_Graph);
 		for (double d : hx) {
 			/* break condition */
-			if (d <= 0 || path + d > upper_bound) {
+			if (d <= 0 || path + d >= upper_bound) {
 				continue;
 			}
 			hxc.add(d);
 		}
+
+		if (hxc.size() == 0) {
+			temp_p.remove((Object) node);
+			visited.remove((Object) node);
+			return;
+		}
+
 		Collections.sort(hxc);
 
 		List<Integer> sorted_need = new ArrayList<Integer>(heuristic.len_Graph);
@@ -74,12 +81,10 @@ public class DFS_H {
 			}
 		}
 		// te_msec = System.nanoTime();
-		// time_dfs += te_msec - t_msec;
-
+		// time_dfs += te_msec - t_msec;\
 		for (int i : sorted_need) {
 			DFS(startnode, adj_matrix, i, path + adj_matrix[node][i], visited);
 		}
-
 		temp_p.remove((Object) node);
 		visited.remove((Object) node);
 		return;
