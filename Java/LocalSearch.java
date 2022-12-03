@@ -1,9 +1,7 @@
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 public class LocalSearch {
 	public static Random r = new Random();
@@ -74,45 +72,25 @@ public class LocalSearch {
 		return best_solution;
 	}
 
-	public static void main(String args[]) {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Please input the filename of the graph:");
-		String filename = sc.nextLine();
-		File file_input = new File(filename);
-		double[][] graph = input_trans.getInput(file_input);
-		int N = graph.length;
-		List<Integer> best_overall = null;
-		double best_overall_cost = N * 5000;
-		List<String> list_searched = new LinkedList<String>();
-		int count = 500;
-		while (count > 0) {
-			List<Integer> path_random = random_permutation(N);
-			boolean not_converged = true;
-			if (list_searched.contains(path_random.toString())) {
-				continue;
-			}
-			list_searched.add(path_random.toString());
-			if (list_searched.size() > max_size) {
-				list_searched.remove(0);
-			}
-			while (not_converged) {
-				List<Integer> best_solution = SLS(path_random, graph);
-				if (best_solution.toString().equals(path_random.toString())) {
-					not_converged = false;
-				}
-				path_random = best_solution;
-				double newcost = calc_cost(best_solution, graph);
-				if (newcost < best_overall_cost) {
-					best_overall = best_solution;
-					best_overall.add(best_overall.get(0));
-					best_overall_cost = newcost;
-
-				}
-				count -= 1;
-			}
-		}
-		sc.close();
-		System.out.println(best_overall);
-		System.out.println(best_overall_cost);
-	}
+	/*
+	 * public static void main(String args[]) { Scanner sc = new Scanner(System.in);
+	 * System.out.println("Please input the filename of the graph:"); String
+	 * filename = sc.nextLine(); File file_input = new File(filename); double[][]
+	 * graph = input_trans.getInput(file_input); int N = graph.length; List<Integer>
+	 * best_overall = null; double best_overall_cost = N * 5000; List<String>
+	 * list_searched = new LinkedList<String>(); int count = 500; while (count > 0)
+	 * { List<Integer> path_random = random_permutation(N); boolean not_converged =
+	 * true; if (list_searched.contains(path_random.toString())) { continue; }
+	 * list_searched.add(path_random.toString()); if (list_searched.size() >
+	 * max_size) { list_searched.remove(0); } while (not_converged) { List<Integer>
+	 * best_solution = SLS(path_random, graph); if
+	 * (best_solution.toString().equals(path_random.toString())) { not_converged =
+	 * false; } path_random = best_solution; double newcost =
+	 * calc_cost(best_solution, graph); if (newcost < best_overall_cost) {
+	 * best_overall = best_solution; best_overall.add(best_overall.get(0));
+	 * best_overall_cost = newcost;
+	 * 
+	 * } count -= 1; } } sc.close(); System.out.println(best_overall);
+	 * System.out.println(best_overall_cost); }
+	 */
 }

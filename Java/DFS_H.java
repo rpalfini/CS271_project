@@ -1,8 +1,6 @@
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
 public class DFS_H {
 
@@ -82,53 +80,12 @@ public class DFS_H {
 			}
 		}
 		// te_msec = System.nanoTime();
-		// time_dfs += te_msec - t_msec;\
+		// time_dfs += te_msec - t_msec;
 		for (int i : sorted_need) {
 			DFS(startnode, adj_matrix, i, path + adj_matrix[node][i], visited);
 		}
 		temp_p.remove((Object) node);
 		visited.remove((Object) node);
 		return;
-	}
-
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Please input the filename of the graph:");
-		String filename = sc.nextLine();
-		File file_input = new File(filename);
-		sc.close();
-
-		double[][] graph = input_trans.getInput(file_input);
-		heuristic.init(graph);
-		int Start_node = 0;
-		List<Integer> v_visited = new ArrayList<Integer>(heuristic.len_Graph);
-
-		long time_msec = System.currentTimeMillis();
-
-		DFS(Start_node, graph, Start_node, 0, v_visited);
-
-		long time_msec_end = System.currentTimeMillis();
-
-		p.add(Start_node);
-
-		System.out.println("path: " + p);
-		/* verfiy */
-		/*
-		 * double distance_verify = 0; for (int i = 0; i < p.size() - 1; i++) {
-		 * distance_verify += graph[p.get(i)][p.get(i + 1)]; }
-		 * System.out.println("path_verify:" + distance_verify);
-		 */
-		System.out.println("shortest path cost: " + upper_bound);
-		System.out.println("cost of search: " + total_t);
-
-		long t = 1;
-		for (int i = 1; i < heuristic.len_Graph; i++) {
-			t *= i;
-		}
-
-		System.out.println("cost of search without heuristic/prune: " + t);
-		// System.out.println("dfs ns time: " + time_dfs);
-		// System.out.println("hx ns time: " + time_hx);
-		System.out.println("total ms time: " + (time_msec_end - time_msec));
 	}
 }
