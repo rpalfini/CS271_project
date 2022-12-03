@@ -62,10 +62,10 @@ public class DFS_H {
 		while (count < l) {
 			double d = hxc.get(count);
 			for (int i = 0; i < heuristic.len_Graph; i++) {
-				if (skip.contains(i)) {
-					continue;
-				}
 				if (hx[i] == d) {
+					if (skip.contains(i)) {
+						continue;
+					}
 					skip.add(i);
 					sorted_need.add(i);
 					count += 1;
