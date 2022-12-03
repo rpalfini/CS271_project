@@ -126,7 +126,7 @@ public class DFS_H {
 			t *= i;
 		}
 
-		System.out.println("cost to search without prune: " + t);
+		System.out.println("cost of search without heuristic/prune: " + t);
 		// System.out.println("dfs ns time: " + time_dfs);
 		// System.out.println("hx ns time: " + time_hx);
 		System.out.println("total ms time: " + (time_msec_end - time_msec));
