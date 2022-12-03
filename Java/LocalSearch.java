@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 public class LocalSearch {
 	public static Random r = new Random();
@@ -74,11 +75,13 @@ public class LocalSearch {
 	}
 
 	public static void main(String args[]) {
-
-		File file_input = new File("20_5.0_1.0.out");
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Please input the filename of the graph:");
+		String filename = sc.nextLine();
+		File file_input = new File(filename);
 		double[][] graph = input_trans.getInput(file_input);
 		int N = graph.length;
-		// List<Integer> best_overall = new LinkedList<Integer>();
+		List<Integer> best_overall = null;
 		double best_overall_cost = N * 5000;
 		List<String> list_searched = new LinkedList<String>();
 		int count = 500;
@@ -100,14 +103,16 @@ public class LocalSearch {
 				path_random = best_solution;
 				double newcost = calc_cost(best_solution, graph);
 				if (newcost < best_overall_cost) {
-					// best_overall = best_solution;
-					System.out.println(best_solution);
+					best_overall = best_solution;
+					best_overall.add(best_overall.get(0));
 					best_overall_cost = newcost;
-					System.out.println(best_overall_cost);
+
 				}
 				count -= 1;
 			}
 		}
-
+		sc.close();
+		System.out.println(best_overall);
+		System.out.println(best_overall_cost);
 	}
 }

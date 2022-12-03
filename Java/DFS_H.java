@@ -2,20 +2,21 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 public class DFS_H {
 
 	public static double upper_bound = Double.MAX_VALUE;
 	// public static long time_dfs = 0;
 	// public static long time_hx = 0;
-	// public static long total_t = 0;
+	public static long total_t = 0;
 	public static List<Integer> p = new ArrayList<Integer>();
 	public static List<Integer> temp_p = new ArrayList<Integer>();
 
 	public static void DFS(int startnode, double[][] adj_matrix, int node, double path, List<Integer> visited) {
 		/* timing */
 		// long t_msec = System.nanoTime();
-		// total_t += 1;
+		total_t++;
 
 		temp_p.add(node);
 		visited.add(node);
@@ -91,11 +92,15 @@ public class DFS_H {
 	}
 
 	public static void main(String[] args) {
-		File file_input = new File("20_5.0_1.0.out");
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Please input the filename of the graph:");
+		String filename = sc.nextLine();
+		File file_input = new File(filename);
+		sc.close();
+
 		double[][] graph = input_trans.getInput(file_input);
 		heuristic.init(graph);
 		int Start_node = 0;
-
 		List<Integer> v_visited = new ArrayList<Integer>(heuristic.len_Graph);
 
 		long time_msec = System.currentTimeMillis();
@@ -107,23 +112,21 @@ public class DFS_H {
 		p.add(Start_node);
 
 		System.out.println("path: " + p);
-
 		/* verfiy */
-		double distance_verify = 0;
-		for (int i = 0; i < p.size() - 1; i++) {
-			distance_verify += graph[p.get(i)][p.get(i + 1)];
+		/*
+		 * double distance_verify = 0; for (int i = 0; i < p.size() - 1; i++) {
+		 * distance_verify += graph[p.get(i)][p.get(i + 1)]; }
+		 * System.out.println("path_verify:" + distance_verify);
+		 */
+		System.out.println("shortest path cost: " + upper_bound);
+		System.out.println("cost of search: " + total_t);
+
+		long t = 1;
+		for (int i = 1; i < heuristic.len_Graph; i++) {
+			t *= i;
 		}
 
-		System.out.println("path_verify:" + distance_verify);
-		System.out.println("shortest path cost: " + upper_bound);
-		// System.out.println("cost to loop: " + total_t);
-
-		// long t = 1;
-		// for (int i = 1; i < heuristic.len_Graph; i++) {
-		// t *= i;
-		// }
-
-		// System.out.println("cost to loop all: " + t);
+		System.out.println("cost to search without prune: " + t);
 		// System.out.println("dfs ns time: " + time_dfs);
 		// System.out.println("hx ns time: " + time_hx);
 		System.out.println("total ms time: " + (time_msec_end - time_msec));
