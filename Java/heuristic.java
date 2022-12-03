@@ -1,9 +1,11 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class heuristic {
-	public static HashMap<Long, double[]> dict = new HashMap<Long, double[]>();
+	public static Map<Long, double[]> dict;
 	public static boolean searched = false;
 	public static int len_Graph = 0;
 	public static List<Double> minpath = new ArrayList<Double>(heuristic.len_Graph);
@@ -24,7 +26,18 @@ public class heuristic {
 			}
 			minpath.add(min);
 		}
-		dict = new HashMap<Long, double[]>(33554432);
+		if (len_Graph < 24) {
+			dict = new HashMap<Long, double[]>(33554432);
+		} else {
+			dict = new LinkedHashMap<Long, double[]>(33554432) {
+
+				private static final long serialVersionUID = 1L;
+
+				protected boolean removeEldestEntry(Map.Entry<Long, double[]> eldest) {
+					return size() > limit;
+				}
+			};
+		}
 		return true;
 
 	}
@@ -64,10 +77,6 @@ public class heuristic {
 			heuristic[i] = a;
 		}
 
-		if (dict.size() > limit) {
-			dict.clear();
-			System.gc();
-		}
 		dict.put(key, heuristic);
 		return heuristic;
 	}
