@@ -1,3 +1,5 @@
+package cs271project;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -87,17 +89,22 @@ public class heuristic {
 		if (cost >= max) {
 			return cost;
 		}
-		long key = genKey(visited, current);
 
+		long key = genKey(visited, current);
 		if (dict.containsKey(key)) {
 			double min = Double.MAX_VALUE;
-			for (double d : dict.get(key)) {
+			int i = 0;
+			double[] hx = dict.get(key);
+			for (int a = 0; a < hx.length; a++) {
+				double d = hx[a];
 				if (d < min) {
 					min = d;
+					i = a;
 				}
 			}
-			return min;
+			return min + cost + graphmap[current][i] - minpath.get(current);
 		}
+
 		if (n == 0 || (visited.size() == len_Graph)) {
 			return cost;
 		}
@@ -118,26 +125,4 @@ public class heuristic {
 		return min;
 	}
 
-	public static double[] fun_nodict_heuristic(double max, double[][] graphmap, int current, List<Integer> visited,
-			int n) {
-		double fix = 0;
-		double[] heuristic = new double[len_Graph];
-		for (int i = 0; i < len_Graph; i++) {
-			if (visited.contains(i)) {
-				continue;
-			}
-			fix += minpath.get(i);
-		}
-		for (int i = 0; i < len_Graph; i++) {
-			if (visited.contains(i)) {
-				heuristic[i] = -1d;
-				continue;
-			}
-			visited.add(i);
-			double a = fun_heuristic_recursive(max, graphmap[current][i] + fix, graphmap, i, visited, n - 1);
-			visited.remove((Object) i);
-			heuristic[i] = a;
-		}
-		return heuristic;
-	}
 }

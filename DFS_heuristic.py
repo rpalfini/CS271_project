@@ -103,7 +103,7 @@ def DFS(startnode, adj_matrix, node, need_visit, path, visited):
     return
 
 
-file_input = open("11_5.0_1.0.out", "r")
+file_input = open("15_5.0_1.0.out", "r")
 graph = inputTransformer.getInput(file_input)
 N = len(graph)
 Start_node = 0
@@ -133,12 +133,12 @@ print('path_verify:', distance_verify)
 #
 
 print("shortest path cost: " + str(upper_bound))
-print("cost to loop: " + str(total_t))
+#print("cost to loop: " + str(total_t))
 t = 1
 for i in range(1, N):
     t *= i 
-print("cost to loop all: " + str(t))
-print("dfs ns time: " + str(time_dfs))
-print("hx ns time: " + str(time_hx))
+#print("cost to loop all: " + str(t))
+#print("dfs ns time: " + str(time_dfs))
+#print("hx ns time: " + str(time_hx))
 
 # g.render('1.png', format='png')
