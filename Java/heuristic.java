@@ -87,6 +87,17 @@ public class heuristic {
 		if (cost >= max) {
 			return cost;
 		}
+		long key = genKey(visited, current);
+
+		if (dict.containsKey(key)) {
+			double min = Double.MAX_VALUE;
+			for (double d : dict.get(key)) {
+				if (d < min) {
+					min = d;
+				}
+			}
+			return min;
+		}
 		if (n == 0 || (visited.size() == len_Graph)) {
 			return cost;
 		}
