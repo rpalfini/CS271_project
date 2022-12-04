@@ -1,5 +1,6 @@
 package cs271project;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -7,11 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 public class heuristic {
-	public static Map<Long, double[]> dict;
+	public static Map<Object, double[]> dict;
+
 	public static boolean searched = false;
 	public static int len_Graph = 0;
 	public static List<Double> minpath = new ArrayList<Double>(heuristic.len_Graph);
 	public static final int limit = 25165820;
+	public static int shift = 0;
 
 	public static boolean init(double[][] map) {
 		len_Graph = map.length;
@@ -29,17 +32,18 @@ public class heuristic {
 			minpath.add(min);
 		}
 		if (len_Graph < 24) {
-			dict = new HashMap<Long, double[]>(33554432);
+			dict = new HashMap<Object, double[]>(33554432);
 		} else {
-			dict = new LinkedHashMap<Long, double[]>(33554432) {
+			dict = new LinkedHashMap<Object, double[]>(33554432) {
 
 				private static final long serialVersionUID = 1L;
 
-				protected boolean removeEldestEntry(Map.Entry<Long, double[]> eldest) {
+				protected boolean removeEldestEntry(Map.Entry<Object, double[]> eldest) {
 					return size() > limit;
 				}
 			};
 		}
+		shift = (int) (Math.log(len_Graph) / Math.log(2)) + 1;
 		return true;
 
 	}
@@ -52,9 +56,22 @@ public class heuristic {
 		return result;
 	}
 
+	private static BigInteger genBIKey(List<Integer> visited, int current) {
+		BigInteger result = BigInteger.valueOf(current);
+		for (int i : visited) {
+			result = result.setBit(i + shift);
+		}
+		return result;
+	}
+
 	// input different n(steps) may help with the speed and memory usage
 	public static double[] fun_heuristic(double max, double[][] graphmap, int current, List<Integer> visited, int n) {
-		long key = genKey(visited, current);
+		Object key;
+		if (heuristic.len_Graph > 56) {
+			key = genBIKey(visited, current);
+		} else {
+			key = genKey(visited, current);
+		}
 
 		if (dict.containsKey(key)) {
 			return dict.get(key);
@@ -90,7 +107,13 @@ public class heuristic {
 			return cost;
 		}
 
-		long key = genKey(visited, current);
+		Object key;
+		if (heuristic.len_Graph > 56) {
+			key = genBIKey(visited, current);
+		} else {
+			key = genKey(visited, current);
+		}
+
 		if (dict.containsKey(key)) {
 			double min = Double.MAX_VALUE;
 			int i = 0;
