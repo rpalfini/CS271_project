@@ -102,8 +102,12 @@ public class Main {
 	public static void dfs(double[][] graph) {
 		heuristic.init(graph);
 
-		if (heuristic.len_Graph > 50) {
+		if (heuristic.len_Graph < 50) {
+			DFS_H.hx_steps = 4;
+		} else if (heuristic.len_Graph <= 100) {
 			DFS_H.hx_steps = 3;
+		} else {
+			DFS_H.hx_steps = 2;
 		}
 
 		DFS_H.time = System.currentTimeMillis() + 600000;
