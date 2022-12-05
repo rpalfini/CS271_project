@@ -9,15 +9,17 @@ public class DFS_H {
 	public static double upper_bound = Double.MAX_VALUE;
 	// public static long time_dfs = 0;
 	// public static long time_hx = 0;
-	public static long total_t = 0;
+	// public static long total_t = 0;
 	public static List<Integer> p = new ArrayList<Integer>();
 	public static List<Integer> temp_p = new ArrayList<Integer>();
 	public static long time;
+	public static int hx_steps = 4;
 
 	public static void DFS(int startnode, double[][] adj_matrix, int node, double path, List<Integer> visited) {
 		/* timing */
 		// long t_msec = System.nanoTime();
 		// total_t++;
+		// System.out.println(total_t + ": " + visited.size());
 		if (time < System.currentTimeMillis()) {
 			return;
 		}
@@ -43,7 +45,7 @@ public class DFS_H {
 		// time_dfs += te_msec - t_msec;
 		// t_msec = System.nanoTime();
 
-		double[] hx = heuristic.fun_heuristic(upper_bound - path, adj_matrix, node, visited, 4);
+		double[] hx = heuristic.fun_heuristic(upper_bound - path, adj_matrix, node, visited, hx_steps);
 
 		// te_msec = System.nanoTime();
 		// time_hx += te_msec - t_msec;

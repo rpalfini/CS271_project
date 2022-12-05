@@ -15,7 +15,6 @@ public class Main {
 				if (fileEntry.getName().contains("txt") || fileEntry.getName().contains("out")) {
 					double[][] graph = input_trans.getInput(fileEntry);
 					System.out.println("Running DFS for: " + fileEntry.getName());
-					DFS_H.time = System.currentTimeMillis() + 600000;
 					dfs(graph);
 					System.out.println("Running SLS for: " + fileEntry.getName());
 					sls(graph);
@@ -101,14 +100,21 @@ public class Main {
 	}
 
 	public static void dfs(double[][] graph) {
-		DFS_H.upper_bound = Double.MAX_VALUE;
-		DFS_H.total_t = 0;
-		DFS_H.p = new ArrayList<Integer>();
-		DFS_H.temp_p = new ArrayList<Integer>();
-
 		heuristic.init(graph);
+
+		if (heuristic.len_Graph > 50) {
+			DFS_H.hx_steps = 3;
+		}
+
+		DFS_H.time = System.currentTimeMillis() + 600000;
+		DFS_H.upper_bound = Double.MAX_VALUE;
+		// DFS_H.total_t = 0;
+		int size = (int) (heuristic.len_Graph / 0.75 + 1);
+		DFS_H.p = new ArrayList<Integer>(size);
+		DFS_H.temp_p = new ArrayList<Integer>(size);
+
 		int Start_node = 0;
-		List<Integer> v_visited = new ArrayList<Integer>(heuristic.len_Graph);
+		List<Integer> v_visited = new ArrayList<Integer>(size);
 
 		long time_msec = System.currentTimeMillis();
 
