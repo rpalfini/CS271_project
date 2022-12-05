@@ -1,3 +1,5 @@
+package cs271project;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,12 +12,15 @@ public class DFS_H {
 	public static long total_t = 0;
 	public static List<Integer> p = new ArrayList<Integer>();
 	public static List<Integer> temp_p = new ArrayList<Integer>();
+	public static long time;
 
 	public static void DFS(int startnode, double[][] adj_matrix, int node, double path, List<Integer> visited) {
 		/* timing */
 		// long t_msec = System.nanoTime();
-		total_t++;
-
+		// total_t++;
+		if (time < System.currentTimeMillis()) {
+			return;
+		}
 		temp_p.add(node);
 		visited.add(node);
 

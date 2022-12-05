@@ -1,3 +1,5 @@
+package cs271project;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -5,10 +7,38 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+	private static void listFilesForFolder(final File folder) {
+		for (final File fileEntry : folder.listFiles()) {
+			if (fileEntry.isDirectory()) {
+				listFilesForFolder(fileEntry);
+			} else {
+				if (fileEntry.getName().contains("txt") || fileEntry.getName().contains("out")) {
+					double[][] graph = input_trans.getInput(fileEntry);
+					System.out.println("Running DFS for: " + fileEntry.getName());
+					DFS_H.time = System.currentTimeMillis() + 600000;
+					dfs(graph);
+					System.out.println("Running SLS for: " + fileEntry.getName());
+					sls(graph);
+					System.out.println("Ended");
+					System.out.println();
+				}
+			}
+		}
+	}
+
+	public static void Auto() {
+		listFilesForFolder(new File("."));
+	}
+
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Please input the filename of the graph:");
+		System.out.println("Please input the filename of the graph, or input \"auto\" to run all txt and out files:");
 		String filename = sc.nextLine();
+		if (filename.equals("auto")) {
+			Auto();
+			sc.close();
+			return;
+		}
 		File file_input = new File(filename);
 		if (!file_input.exists()) {
 			System.out.println("File not found, exited");
@@ -23,6 +53,7 @@ public class Main {
 			sc.close();
 			return;
 		}
+
 		System.out.println("Input 1 to do DFS and 2 for SLS: ");
 		int i = Integer.parseInt(sc.nextLine());
 		if (i == 1) {
@@ -70,6 +101,11 @@ public class Main {
 	}
 
 	public static void dfs(double[][] graph) {
+		DFS_H.upper_bound = Double.MAX_VALUE;
+		DFS_H.total_t = 0;
+		DFS_H.p = new ArrayList<Integer>();
+		DFS_H.temp_p = new ArrayList<Integer>();
+
 		heuristic.init(graph);
 		int Start_node = 0;
 		List<Integer> v_visited = new ArrayList<Integer>(heuristic.len_Graph);
@@ -90,14 +126,14 @@ public class Main {
 		 * System.out.println("path_verify:" + distance_verify);
 		 */
 		System.out.println("shortest path cost: " + DFS_H.upper_bound);
-		System.out.println("cost of search: " + DFS_H.total_t);
+		// System.out.println("cost of search: " + DFS_H.total_t);
 
-		long t = 1;
-		for (int i = 1; i < heuristic.len_Graph; i++) {
-			t *= i;
-		}
+		// long t = 1;
+		// for (int i = 1; i < heuristic.len_Graph; i++) {
+		// t *= i;
+		// }
 
-		System.out.println("cost of search without heuristic/prune: " + t);
+		// System.out.println("cost of search without heuristic/prune: " + t);
 		// System.out.println("dfs ns time: " + time_dfs);
 		// System.out.println("hx ns time: " + time_hx);
 		System.out.println("total ms time: " + (time_msec_end - time_msec));

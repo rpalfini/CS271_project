@@ -10,15 +10,14 @@ import java.util.Map;
 public class heuristic {
 	public static Map<Object, double[]> dict;
 
-	public static boolean searched = false;
 	public static int len_Graph = 0;
-	public static List<Double> minpath = new ArrayList<Double>(heuristic.len_Graph);
+	public static List<Double> minpath;
 	public static final int limit = 25165820;
 	public static int shift = 0;
 
 	public static boolean init(double[][] map) {
 		len_Graph = map.length;
-		minpath.clear();
+		minpath= new ArrayList<Double>((int) (heuristic.len_Graph / 0.75) + 1);
 		for (double[] arr : map) {
 			double min = Double.MAX_VALUE;
 			for (double i : arr) {
